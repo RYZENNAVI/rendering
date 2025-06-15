@@ -1,0 +1,33 @@
+stages:
+  - lint
+  - format
+  - build
+
+# Lint-Check: Überprüft, ob der Code korrekt formatiert ist
+lint:
+  stage: lint
+  script:
+    - echo "Running clang-format lint check..."
+    - find . -regex '.*\.\(c\|h\)' -exec clang-format --dry-run --Werror {} +
+  only:
+    - merge_requests
+  allow_failure: false # Stopp bei Fehlern
+
+# Formatierung: Führt die automatische Formatierung durch
+format:
+  stage: format
+  script:
+    - echo "Running clang-format on all source files..."
+    - find . -regex '.*\.\(c\|h\)' -exec clang-format -i {} +
+  only:
+    - merge_requests
+  allow_failure: false # Falls der Formatierungsschritt scheitert, wird der Merge-Request blockiert
+
+build:
+  stage: build
+  script:
+    - echo "Building the project..."
+    # - make für späteres Makefile
+  only:
+    - merge_requests
+    - branches
