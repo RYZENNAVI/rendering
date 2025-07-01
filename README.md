@@ -15,7 +15,9 @@ Please follow some common policies, while working on this software project. They
 
 ## Rules for Working with Git
 * Each group gets their own branch
-* Individual branches may be created, but must only be merged to group specific branch
-* A workflow for building the project for commits to the group branches and main is going to be implemented
+* Individual branches must be created to work an code/documentation and are derived from the group branches
+* To merge individual branches to the group branch, a pull request has to be created. The reviewer is always danies19
+* A workflow for the linter is going to be implemented to enforce some general coding rules
 * Please use short and meaningful commit messages (AI may be used)
+* We advise to make multiple individual commits with proper naming instead of one big one
 * Do not use AI generated code

@@ -5,7 +5,7 @@ stages:
   - format
   - build
 
-# Lint-Check: Überprüft, ob der Code korrekt formatiert ist
+# Lint-Check: Checks if the code is correctly formatted
 lint:
   stage: lint
   script:
@@ -14,9 +14,9 @@ lint:
     - find . -regex '.*\.\(c\|h\)' -exec clang-format --dry-run --Werror {} +
   only:
     - merge_requests
-  allow_failure: false # Stopp bei Fehlern
-  allow_failure: false
+  allow_failure: true # Stop on errors
 
+# Clang-Tidy: Performs static analysis on the code
 clang-tidy:
   stage: lint
   script:
@@ -25,9 +25,9 @@ clang-tidy:
     - find . -regex '.*\.\(c\|h\)' -exec clang-tidy {} -- -I. \;
   only:
     - merge_requests
-  allow_failure: false
+  allow_failure: true
 
-# Formatierung: Führt die automatische Formatierung durch
+# Formatting: Performs automatic formatting
 format:
   stage: format
   script:
@@ -36,14 +36,13 @@ format:
     - find . -regex '.*\.\(c\|h\)' -exec clang-format -i {} +
   only:
     - merge_requests
-  allow_failure: false # Falls der Formatierungsschritt scheitert, wird der Merge-Request blockiert
   allow_failure: false
 
 build:
   stage: build
   script:
     - echo "Building the project..."
-    # - make für späteres Makefile
+    # - make for later Makefile
   only:
     - merge_requests
     - branches

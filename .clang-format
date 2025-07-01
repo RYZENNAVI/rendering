@@ -1,0 +1,14 @@
+# Enforces indentation, brace style, line length, and spacing as per CMU C Coding Standard
+BasedOnStyle: LLVM
+IndentWidth: 4 # 4 spaces per indent
+TabWidth: 4
+UseTab: Never # Use spaces, not tabs
+BreakBeforeBraces: Attach # braces on same line
+AllowShortIfStatementsOnASingleLine: true # Allow single-line if without braces
+AllowShortLoopsOnASingleLine: true
+AllowShortFunctionsOnASingleLine: InlineOnly
+ColumnLimit: 78 # Max line length
+SpacesBeforeTrailingComments: 1
+SpaceAfterCStyleCast: true
+SortIncludes: true # Sort #includes
+IncludeBlocks: Preserve
