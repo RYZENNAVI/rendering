@@ -25,8 +25,10 @@
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include "../include/common.h"
-#include "../inc/common.h"
+#include "include/common_fixed.h"
 #include "../include/image_png.h"
 
 // Global image for rendering
@@ -42,6 +44,11 @@ static double reduce_angle(double angle) {
 // Initialize rendering system
 static void init_rendering(int width, int height) {
     knots_init();
+    /* Ensure output directory exists */
+    struct stat st = {0};
+    if (stat("output", &st) == -1) {
+        mkdir("output", 0755);
+    }
     g_image = create_image(width, height);
     if (!g_image) {
         fprintf(stderr, "Failed to create image\n");
@@ -69,6 +76,12 @@ static void render_stroke_to_image(brush_stroke_t *stroke) {
     }
 }
 
+// Quadratic curve definition for compatibility
+typedef struct {
+    point_t control;
+    point_t end;
+} quadratic_curve_t;
+
 // Helper function to implement quadraticto using curveto
 static knot_t *quadraticto(knot_t *path, quadratic_curve_t curve) {
     // Convert quadratic to cubic Bézier curve
@@ -91,12 +104,6 @@ static knot_t *quadraticto(knot_t *path, quadratic_curve_t curve) {
     
     return curveto(path, c1, c2, curve.end);
 }
-
-// Quadratic curve definition for compatibility
-typedef struct {
-    point_t control;
-    point_t end;
-} quadratic_curve_t;
 
 /**************************** Scenario 1: Sharp Corner ****************************/
 static void example_sharp(void) {
@@ -207,8 +214,8 @@ static void example_relative(void) {
     /* Start at (200,200), then move relatively forming an L-shape */
     point_t start = {200.0, 200.0};
     knot_t *path = moveto(start);
-    path = rlineto(path, 150.0, 0.0);     /* relative horizontal line */
-    path = rlineto(path, 0.0, 150.0);     /* relative vertical line */
+    path = rlineto(path, (point_t){150.0, 0.0});     /* relative horizontal line */
+    path = rlineto(path, (point_t){0.0, 150.0});     /* relative vertical line */
     path = pathclose(path);
 
     /* Use a basic circular/rounded brush */
@@ -290,7 +297,7 @@ static void example_misc(void) {
 
     /* Demonstrate rmoveto: start at (100,100) then move relatively by (50,50) */
     knot_t *path = moveto((point_t){100.0, 100.0});
-    path = rmoveto(path, 50.0, 50.0);           /* relative move to (150,150) */
+    path = rmoveto(path, (point_t){50.0, 50.0});           /* relative move to (150,150) */
     path = lineto(path, (point_t){300.0, 150.0});
     path = pathclose(path);
 
