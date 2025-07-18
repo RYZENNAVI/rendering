@@ -1,6 +1,6 @@
 /*
  * @file user_examples.c
- * @authors Team 4 - Li
+ * @authors Team 4 - Li 
  * @date 09.07.2025
  *
  * Demo program showcasing the high-level drawing API exposed by common.h.
