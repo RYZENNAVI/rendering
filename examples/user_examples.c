@@ -1,6 +1,6 @@
 /*
  * @file user_examples.c
- * @authors Team 4 - Li 
+ * @authors Team 4 - Li
  * @date 09.07.2025
  *
  * Demo program showcasing the high-level drawing API exposed by common.h.
@@ -25,10 +25,17 @@
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include "../include/common.h"
-#include "include/common_fixed.h"
+#include "../inc/common.h"
+#include <stddef.h>
+
+/* Forward declaration from color_mixing.c */
+color_t *color_mixer(const color_t *color1, const color_t *color2, double mix);
+
+/* Forward declare quadratic_curve_t */
+typedef struct {
+    point_t control;
+    point_t end;
+} quadratic_curve_t;
 #include "../include/image_png.h"
 
 // Global image for rendering
@@ -44,11 +51,6 @@ static double reduce_angle(double angle) {
 // Initialize rendering system
 static void init_rendering(int width, int height) {
     knots_init();
-    /* Ensure output directory exists */
-    struct stat st = {0};
-    if (stat("output", &st) == -1) {
-        mkdir("output", 0755);
-    }
     g_image = create_image(width, height);
     if (!g_image) {
         fprintf(stderr, "Failed to create image\n");
@@ -75,12 +77,6 @@ static void render_stroke_to_image(brush_stroke_t *stroke) {
         span_list_free(spans);
     }
 }
-
-// Quadratic curve definition for compatibility
-typedef struct {
-    point_t control;
-    point_t end;
-} quadratic_curve_t;
 
 // Helper function to implement quadraticto using curveto
 static knot_t *quadraticto(knot_t *path, quadratic_curve_t curve) {
