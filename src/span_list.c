@@ -6,7 +6,7 @@
  * Implementation of span list management functions
  */
 
-#include "../../inc/common.h"
+#include "../inc/common.h"
 #include <stdlib.h>
 #include <string.h>
 

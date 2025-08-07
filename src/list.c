@@ -6,7 +6,7 @@
 // TODO:
 //  - Add side effects to postconditions
 
-#include "list.h"
+#include "../inc/list.h"
 #include <stdlib.h>
 
 #define LINK(pred, new_node, succ)                                           \

@@ -833,7 +833,7 @@ void show_segments(brush_stroke_t *stroke) {
      => amount of entries: stroke->beziers = 1/2 * trace_top
      However, we need a margin of safety */
   if (stroke->beziers == NULL) {
-    stroke->beziers = malloc(trace_top* 2/3 * sizeof *trace_top);
+    stroke->beziers = malloc(trace_top* 2/3 * sizeof *stroke->beziers);
   }
 
     // If not allocated at this point, there was a malloc error

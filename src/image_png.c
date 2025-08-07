@@ -12,10 +12,11 @@
  * an RGBA buffer (wrapped in an image_t struct) and writes the data to disk.
  */
 
-#include "common.h"
+#include "../inc/common.h"
 #include <png.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "../inc/image_png.h"
 
 /**
  * @brief Saves an image buffer as a PNG file using libpng.

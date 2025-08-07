@@ -1,9 +1,9 @@
 // Copyright 2025 Prof. Dr.-Ing. Volker Roth
 // See accompanying README for license information
-// Rewrite author: Iaroslav Tretiakov
+// Rewrite author: Iaroslav Tretiakov & Daniel Schmidt
 // Date: 10.06.2025
 
-#include "knots.h"
+#include "../inc/knots.h"
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,6 +11,10 @@
 #define KNOTS_INCREMENT 1024
 
 static d_linked_list unused_knots;
+
+// === Tracking allocated memory blocks ===
+static void **knots_blocks = NULL;
+static size_t knots_block_count = 0;
 
 void knots_init(void) {
     list_init(&unused_knots);
@@ -23,23 +27,44 @@ knot_t *knots_get(void) {
     result = (knot_t *) list_remove_head(&unused_knots);
 
     if (NULL == result) {
-        result = (knot_t *) calloc(KNOTS_INCREMENT, sizeof(knot_t));
-
+        result = calloc(KNOTS_INCREMENT, sizeof(knot_t));
         if (NULL == result) {
             fprintf(stderr, "Out of memory for knots!\n");
             exit(-1);
         }
+
+        // Track this allocation
+        void **new_blocks = realloc(knots_blocks, (knots_block_count + 1) * sizeof(void *));
+        if (new_blocks == NULL) {
+            fprintf(stderr, "Out of memory for block tracking!\n");
+            free(result); // Avoid leak on realloc failure
+            exit(-1);
+        }
+        knots_blocks = new_blocks;
+        knots_blocks[knots_block_count++] = result;
+
         for (index = 0; index < KNOTS_INCREMENT; index++) {
             list_add_tail(&unused_knots, &result[index].list_node);
         }
     }
-    //? Why not `return result`?
+
     return (knot_t *) list_remove_head(&unused_knots);
 }
 
 void knots_free(knot_t *knot) {
     list_add_tail(&unused_knots, &knot->list_node);
 }
+
+void knots_cleanup(void) {
+    for (size_t i = 0; i < knots_block_count; i++) {
+        free(knots_blocks[i]);
+    }
+    free(knots_blocks);
+    knots_blocks = NULL;
+    knots_block_count = 0;
+}
+
+// --------------------------------------------------------
 
 void knots_copy(knot_t *dst, knot_t *src) {
     dst->x = src->x;

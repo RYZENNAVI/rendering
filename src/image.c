@@ -6,7 +6,7 @@
  * Implementation of image creation and BMP output functions
  */
 
-#include "../../inc/common.h"
+#include "../inc/common.h"
 #include <string.h>
 
 /*

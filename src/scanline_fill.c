@@ -9,9 +9,9 @@
  * @date 2025-07-04
  */
 
-#include "scanline_fill.h"
+#include "../inc/scanline_fill.h"
 #include <math.h>
-#include "common.h"
+#include "../inc/common.h"
 
 // filling a polygon using the scanline algorithm
 void fill_polygon_scanline(point_t *pts, int n_pts, image_t *img, color_t fill)

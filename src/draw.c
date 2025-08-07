@@ -5,7 +5,7 @@
 */
 
 #include "brush.h"
-#include "common.h"
+#include "../inc/common.h"
 
 knot_t *moveto(point_t point) {
     knot_t *knot;

@@ -7,7 +7,7 @@
  * Cleaned up version with only essential functions
  */
 
-#include "../../inc/common.h"
+#include "../inc/common.h"
 #include <math.h>
 #include <stdbool.h>
 #include <string.h>

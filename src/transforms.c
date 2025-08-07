@@ -4,7 +4,7 @@
 @date 01.07.25
 */
 
-#include "common.h"
+#include "../inc/common.h"
 
 void brush_tf(knot_t *first, double transform[3][3]) {
     knot_t *k = first;
@@ -22,7 +22,7 @@ void brush_tf(knot_t *first, double transform[3][3]) {
 
         k->x = brush_out[0];
         k->y = brush_out[1];
-        printf("brush x: %f, brush y: %f\n", k->x, k->y);
+        // printf("brush x: %f, brush y: %f\n", k->x, k->y);
 
         if (next->left_type ==
             kt_explicit) { /* left neighbour of next knot = current knot */
